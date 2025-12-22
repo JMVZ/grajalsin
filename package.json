@@ -1,0 +1,17 @@
+{
+  "name": "grajalsin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "analyze": "node analyze_excel.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dayjs": "^1.11.18",
+    "xlsx": "^0.18.5"
+  }
+}
