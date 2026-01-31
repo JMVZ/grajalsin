@@ -1,0 +1,32 @@
+═══════════════════════════════════════════════════════════
+PROBLEMA ACTUAL CON TU DOMINIO
+═══════════════════════════════════════════════════════════
+
+Tu dominio: grajalsin.com.mx
+Tu servidor: 84.32.84.32 (funcionando correctamente)
+
+PROBLEMA:
+---------
+Cuando alguien visita grajalsin.com.mx, Hostinger muestra 
+su página de "dominio registrado" en lugar de tu sitio web.
+
+CAUSA:
+------
+Hostinger tiene activo un servicio llamado "DNS Parking" 
+que intercepta todas las visitas.
+
+SOLUCIÓN:
+---------
+1. Entra a: https://hpanel.hostinger.com
+2. Ve a: Dominios → grajalsin.com.mx
+3. Busca: "Nameservers" o "DNS Settings"
+4. Cambia los nameservers de parking por los estándar
+5. Guarda y espera 15-30 minutos
+
+SI NO SABES CÓMO:
+-----------------
+Contacta al soporte de Hostinger y diles:
+"Necesito cambiar los nameservers de parking a los 
+estándar para que mi dominio funcione"
+
+═══════════════════════════════════════════════════════════

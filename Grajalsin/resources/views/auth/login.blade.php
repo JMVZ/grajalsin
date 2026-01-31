@@ -4,7 +4,6 @@
 
     <div class="text-center mb-8">
         <h2 class="text-2xl font-bold text-gray-800 mb-2">Iniciar Sesión</h2>
-        <p class="text-gray-600 text-sm">Accede a tu cuenta para gestionar el inventario</p>
     </div>
 
     <form method="POST" action="{{ route('login') }}" class="space-y-6">

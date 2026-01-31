@@ -33,48 +33,57 @@
         </div>
     @else
         <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Folio</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Orden</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Operador</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destino</th>
-                        <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($boletas as $boleta)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-4 py-3">
-                                <span class="font-semibold text-blue-600">{{ $boleta->folio }}</span>
-                            </td>
-                            <td class="px-4 py-3 text-sm">{{ $boleta->fecha->format('d/m/Y') }}</td>
-                            <td class="px-4 py-3">
-                                <a href="{{ route('ordenes-carga.show', $boleta->ordenCarga) }}" class="text-blue-600 hover:text-blue-800 font-medium text-sm">
-                                    {{ $boleta->ordenCarga->folio }}
-                                </a>
-                            </td>
-                            <td class="px-4 py-3 text-sm text-gray-900">{{ $boleta->cliente_nombre }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">{{ $boleta->operador_nombre }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">{{ $boleta->destino ?? $boleta->ordenCarga->destino }}</td>
-                            <td class="px-4 py-3 text-right">
-                                <div class="inline-flex gap-2">
-                                    <a href="{{ route('boletas-salida.show', $boleta) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Ver</a>
-                                    <a href="{{ route('boletas-salida.print', $boleta) }}" target="_blank" class="text-green-600 hover:text-green-800 text-sm font-medium">Imprimir</a>
-                                    <form action="{{ route('boletas-salida.destroy', $boleta) }}" method="POST" class="inline" id="delete-form-boleta-{{ $boleta->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="confirmDelete('delete-form-boleta-{{ $boleta->id }}')">Eliminar</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="overflow-x-auto -mx-4 sm:mx-0">
+                <div class="inline-block min-w-full align-middle">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Folio</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                <th class="hidden md:table-cell px-3 py-2 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Orden</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                <th class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Operador</th>
+                                <th class="hidden xl:table-cell px-3 py-2 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destino</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach($boletas as $boleta)
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-3 py-2 sm:px-4 sm:py-3">
+                                        <span class="font-semibold text-blue-600 text-sm">{{ $boleta->folio }}</span>
+                                    </td>
+                                    <td class="px-3 py-2 sm:px-4 sm:py-3 text-sm">{{ $boleta->fecha->format('d/m/Y') }}</td>
+                                    <td class="hidden md:table-cell px-3 py-2 sm:px-4 sm:py-3">
+                                        <a href="{{ route('ordenes-carga.show', $boleta->ordenCarga) }}" class="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                            {{ $boleta->ordenCarga->folio }}
+                                        </a>
+                                    </td>
+                                    <td class="px-3 py-2 sm:px-4 sm:py-3">
+                                        <div class="text-sm text-gray-900 font-medium">{{ $boleta->cliente_nombre }}</div>
+                                        <div class="md:hidden text-xs text-gray-500 mt-1">Orden: {{ $boleta->ordenCarga->folio }}</div>
+                                        <div class="lg:hidden md:block text-xs text-gray-500 mt-1">{{ $boleta->operador_nombre }}</div>
+                                        <div class="xl:hidden lg:block text-xs text-gray-500 mt-1">{{ $boleta->destino ?? $boleta->ordenCarga->destino }}</div>
+                                    </td>
+                                    <td class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-3 text-sm text-gray-600">{{ $boleta->operador_nombre }}</td>
+                                    <td class="hidden xl:table-cell px-3 py-2 sm:px-4 sm:py-3 text-sm text-gray-600">{{ $boleta->destino ?? $boleta->ordenCarga->destino }}</td>
+                                    <td class="px-3 py-2 sm:px-4 sm:py-3 text-right">
+                                        <div class="inline-flex flex-col sm:flex-row gap-1 sm:gap-2">
+                                            <a href="{{ route('boletas-salida.show', $boleta) }}" class="text-blue-600 hover:text-blue-800 text-xs sm:text-sm font-medium">Ver</a>
+                                            <a href="{{ route('boletas-salida.print', $boleta) }}" target="_blank" class="text-green-600 hover:text-green-800 text-xs sm:text-sm font-medium">Imprimir</a>
+                                            <form action="{{ route('boletas-salida.destroy', $boleta) }}" method="POST" class="inline" id="delete-form-boleta-{{ $boleta->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="text-red-600 hover:text-red-800 text-xs sm:text-sm font-medium" onclick="confirmDelete('delete-form-boleta-{{ $boleta->id }}')">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="p-4">{{ $boletas->links() }}</div>
         </div>
     @endif

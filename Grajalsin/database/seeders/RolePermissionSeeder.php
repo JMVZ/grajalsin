@@ -137,6 +137,15 @@ class RolePermissionSeeder extends Seeder
                 'route' => 'usuarios.index',
                 'order' => 6,
                 'is_active' => false
+            ],
+            [
+                'name' => 'Logística CATTA',
+                'slug' => 'logistica-catta',
+                'description' => 'Servicios de logística en transporte de carga pesada',
+                'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+                'route' => 'servicio-logistica.index',
+                'order' => 7,
+                'is_active' => true
             ]
         ];
 
@@ -151,6 +160,7 @@ class RolePermissionSeeder extends Seeder
         $comprasModule = Module::where('slug', 'compras')->first();
         $reportesModule = Module::where('slug', 'reportes')->first();
         $usuariosModule = Module::where('slug', 'usuarios')->first();
+        $logisticaModule = Module::where('slug', 'logistica-catta')->first();
 
         // Verificar y asignar módulos a roles si no existen
         $roleModuleData = [
@@ -161,6 +171,7 @@ class RolePermissionSeeder extends Seeder
             [$adminRole->id, $comprasModule->id],
             [$adminRole->id, $reportesModule->id],
             [$adminRole->id, $usuariosModule->id],
+            [$adminRole->id, $logisticaModule->id],
             // Vendedor tiene acceso a dashboard, inventario, ventas y reportes
             [$vendedorRole->id, $dashboardModule->id],
             [$vendedorRole->id, $inventarioModule->id],

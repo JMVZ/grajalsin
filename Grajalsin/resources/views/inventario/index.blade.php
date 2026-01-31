@@ -213,14 +213,14 @@
                                             <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                                 <div>
                                                     <p class="text-sm text-gray-500">
-                                                        <span class="font-medium text-gray-900">{{ $movimiento->producto->nombre }}</span> - 
+                                                        <span class="font-medium text-gray-900">{{ $movimiento->producto->nombre ?? 'Producto eliminado' }}</span> - 
                                                         {{ $movimiento->motivo }}
                                                     </p>
                                                     <p class="text-xs text-gray-400">{{ $movimiento->fecha_movimiento->diffForHumans() }}</p>
                                                 </div>
                                                 <div class="text-right text-sm whitespace-nowrap">
                                                     <span class="font-medium {{ $movimiento->tipo === 'entrada' ? 'text-green-600' : 'text-red-600' }}">
-                                                        {{ $movimiento->tipo === 'entrada' ? '+' : '-' }}{{ number_format($movimiento->cantidad, 2) }} {{ $movimiento->producto->unidad_medida }}
+                                                        {{ $movimiento->tipo === 'entrada' ? '+' : '-' }}{{ number_format($movimiento->cantidad, 2) }} {{ $movimiento->producto->unidad_medida ?? 'kg' }}
                                                     </span>
                                                 </div>
                                             </div>

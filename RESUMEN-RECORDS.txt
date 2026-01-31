@@ -1,0 +1,45 @@
+═══════════════════════════════════════════════════════════
+TUS REGISTROS DNS - EXPLICACIÓN
+═══════════════════════════════════════════════════════════
+
+✅ REGISTRO A (El más importante):
+   A    @    84.32.84.32
+   → Este apunta tu dominio a tu servidor
+   → ESTÁ CORRECTO, NO LO CAMBIES
+
+✅ CNAME www:
+   CNAME    www    grajalsin.com.mx
+   → Permite usar www.grajalsin.com.mx
+   → ESTÁ CORRECTO, NO LO CAMBIES
+
+✅ REGISTROS DE EMAIL (MX, SPF, DMARC, DKIM):
+   → Todos están correctos para usar email de Hostinger
+   → NO LOS CAMBIES
+
+✅ REGISTROS CAA (Para SSL):
+   → Permiten obtener certificados SSL
+   → ESTÁN CORRECTOS, NO LOS CAMBIES
+
+═══════════════════════════════════════════════════════════
+IMPORTANTE:
+═══════════════════════════════════════════════════════════
+
+TODOS TUS REGISTROS DNS ESTÁN CORRECTOS ✅
+
+El problema NO está en estos registros.
+
+El problema está en los NAMESERVERS que están en OTRA 
+sección del panel de Hostinger (no en esta lista).
+
+Los nameservers actuales son:
+- ns1.dns-parking.com
+- ns2.dns-parking.com
+
+Estos nameservers de parking interceptan todo el tráfico
+y muestran la página de Hostinger.
+
+SOLUCIÓN:
+Cambia los nameservers en la sección "Nameservers" del 
+panel (no en los registros DNS).
+
+═══════════════════════════════════════════════════════════

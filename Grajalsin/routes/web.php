@@ -14,7 +14,10 @@ use App\Http\Controllers\PreOrdenController;
 use App\Http\Controllers\BoletaSalidaController;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -92,6 +95,18 @@ Route::middleware('auth')->group(function () {
 
     Route::get('boletas-salida/{boletas_salida}/impresion', [BoletaSalidaController::class, 'print'])->name('boletas-salida.print');
     Route::resource('boletas-salida', BoletaSalidaController::class)->parameters(['boletas-salida' => 'boletas_salida'])->except(['edit', 'update']);
+
+    // Servicios de Logística CATTA
+    Route::get('servicio-logistica/{servicioLogistica}/impresion', [\App\Http\Controllers\ServicioLogisticaController::class, 'print'])->name('servicio-logistica.print');
+    Route::get('servicio-logistica/{servicioLogistica}/paso2', [\App\Http\Controllers\ServicioLogisticaController::class, 'paso2'])->name('servicio-logistica.paso2');
+    Route::post('servicio-logistica/{servicioLogistica}/paso2', [\App\Http\Controllers\ServicioLogisticaController::class, 'guardarPaso2'])->name('servicio-logistica.guardar-paso2');
+    Route::get('servicio-logistica/{servicioLogistica}/paso3', [\App\Http\Controllers\ServicioLogisticaController::class, 'paso3'])->name('servicio-logistica.paso3');
+    Route::post('servicio-logistica/{servicioLogistica}/paso3', [\App\Http\Controllers\ServicioLogisticaController::class, 'guardarPaso3'])->name('servicio-logistica.guardar-paso3');
+    Route::get('servicio-logistica/{servicioLogistica}/paso4', [\App\Http\Controllers\ServicioLogisticaController::class, 'paso4'])->name('servicio-logistica.paso4');
+    Route::post('servicio-logistica/{servicioLogistica}/paso4', [\App\Http\Controllers\ServicioLogisticaController::class, 'guardarPaso4'])->name('servicio-logistica.guardar-paso4');
+    Route::get('servicio-logistica/{servicioLogistica}/paso5', [\App\Http\Controllers\ServicioLogisticaController::class, 'paso5'])->name('servicio-logistica.paso5');
+    Route::post('servicio-logistica/{servicioLogistica}/paso5', [\App\Http\Controllers\ServicioLogisticaController::class, 'guardarPaso5'])->name('servicio-logistica.guardar-paso5');
+    Route::resource('servicio-logistica', \App\Http\Controllers\ServicioLogisticaController::class)->parameters(['servicio-logistica' => 'servicioLogistica']);
 });
 
 require __DIR__.'/auth.php';
