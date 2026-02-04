@@ -70,6 +70,17 @@
                 </div>
             </div>
         </a>
+
+        <a href="{{ route('proveedores.index') }}" class="block rounded-lg border border-green-200 p-5 hover:shadow-md transition">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded bg-green-100 flex items-center justify-center text-green-700">📦</div>
+                <div>
+                    <p class="text-sm text-green-700 font-semibold">Catálogos</p>
+                    <h3 class="text-lg font-bold text-gray-800">Proveedores</h3>
+                    <p class="text-sm text-gray-500">Proveedores para órdenes de compra</p>
+                </div>
+            </div>
+        </a>
     </div>
 </x-app-layout>
 

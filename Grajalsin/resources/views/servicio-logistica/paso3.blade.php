@@ -68,13 +68,6 @@
                         </div>
 
                         <div>
-                            <label for="operador_expediente_medico" class="block text-sm font-medium text-gray-700 mb-1">Expediente Médico</label>
-                            <input type="text" name="operador_expediente_medico" id="operador_expediente_medico"
-                                value="{{ old('operador_expediente_medico', $servicioLogistica->operador_expediente_medico) }}"
-                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
-                        </div>
-
-                        <div>
                             <label for="operador_curp_rfc" class="block text-sm font-medium text-gray-700 mb-1">CURP y/o RFC</label>
                             <input type="text" name="operador_curp_rfc" id="operador_curp_rfc"
                                 value="{{ old('operador_curp_rfc', $servicioLogistica->operador_curp_rfc) }}"

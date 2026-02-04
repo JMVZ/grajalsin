@@ -84,6 +84,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('clientes', ClienteController::class)->except(['show']);
     // Catálogo de destinos (CRUD básico)
     Route::resource('destinos', DestinoController::class)->except(['show']);
+    // Catálogo de proveedores (CRUD básico)
+    Route::resource('proveedores', \App\Http\Controllers\ProveedorController::class)->parameters(['proveedores' => 'proveedor'])->except(['show']);
     // Hub de Operaciones de Carga
     Route::get('operaciones', [\App\Http\Controllers\OperacionesController::class, 'index'])->name('operaciones.index');
     // Módulo de Pre-órdenes de Carga
@@ -95,6 +97,30 @@ Route::middleware('auth')->group(function () {
 
     Route::get('boletas-salida/{boletas_salida}/impresion', [BoletaSalidaController::class, 'print'])->name('boletas-salida.print');
     Route::resource('boletas-salida', BoletaSalidaController::class)->parameters(['boletas-salida' => 'boletas_salida'])->except(['edit', 'update']);
+
+    // Módulo de Ventas
+    Route::get('ventas', [\App\Http\Controllers\VentasController::class, 'index'])->name('ventas.index');
+    Route::get('ventas/pedidos', [\App\Http\Controllers\PedidoVentaController::class, 'index'])->name('ventas.pedidos.index');
+    Route::get('ventas/pedidos/crear', [\App\Http\Controllers\PedidoVentaController::class, 'create'])->name('ventas.pedidos.create');
+    Route::post('ventas/pedidos', [\App\Http\Controllers\PedidoVentaController::class, 'store'])->name('ventas.pedidos.store');
+    Route::get('ventas/pedidos/{pedidoVenta}', [\App\Http\Controllers\PedidoVentaController::class, 'show'])->name('ventas.pedidos.show');
+    Route::get('ventas/pedidos/{pedidoVenta}/impresion', [\App\Http\Controllers\PedidoVentaController::class, 'print'])->name('ventas.pedidos.print');
+    Route::get('ventas/pedidos/{pedidoVenta}/editar', [\App\Http\Controllers\PedidoVentaController::class, 'edit'])->name('ventas.pedidos.edit');
+    Route::put('ventas/pedidos/{pedidoVenta}', [\App\Http\Controllers\PedidoVentaController::class, 'update'])->name('ventas.pedidos.update');
+    Route::delete('ventas/pedidos/{pedidoVenta}', [\App\Http\Controllers\PedidoVentaController::class, 'destroy'])->name('ventas.pedidos.destroy');
+    Route::post('ventas/pedidos/{pedidoVenta}/estatus', [\App\Http\Controllers\PedidoVentaController::class, 'cambiarEstatus'])->name('ventas.pedidos.estatus');
+
+    // Módulo de Compras
+    Route::get('compras', [\App\Http\Controllers\ComprasController::class, 'index'])->name('compras.index');
+    Route::get('compras/ordenes', [\App\Http\Controllers\OrdenCompraController::class, 'index'])->name('compras.ordenes.index');
+    Route::get('compras/ordenes/crear', [\App\Http\Controllers\OrdenCompraController::class, 'create'])->name('compras.ordenes.create');
+    Route::post('compras/ordenes', [\App\Http\Controllers\OrdenCompraController::class, 'store'])->name('compras.ordenes.store');
+    Route::get('compras/ordenes/{ordenCompra}', [\App\Http\Controllers\OrdenCompraController::class, 'show'])->name('compras.ordenes.show');
+    Route::get('compras/ordenes/{ordenCompra}/impresion', [\App\Http\Controllers\OrdenCompraController::class, 'print'])->name('compras.ordenes.print');
+    Route::get('compras/ordenes/{ordenCompra}/editar', [\App\Http\Controllers\OrdenCompraController::class, 'edit'])->name('compras.ordenes.edit');
+    Route::put('compras/ordenes/{ordenCompra}', [\App\Http\Controllers\OrdenCompraController::class, 'update'])->name('compras.ordenes.update');
+    Route::delete('compras/ordenes/{ordenCompra}', [\App\Http\Controllers\OrdenCompraController::class, 'destroy'])->name('compras.ordenes.destroy');
+    Route::post('compras/ordenes/{ordenCompra}/estatus', [\App\Http\Controllers\OrdenCompraController::class, 'cambiarEstatus'])->name('compras.ordenes.estatus');
 
     // Servicios de Logística CATTA
     Route::get('servicio-logistica/{servicioLogistica}/impresion', [\App\Http\Controllers\ServicioLogisticaController::class, 'print'])->name('servicio-logistica.print');

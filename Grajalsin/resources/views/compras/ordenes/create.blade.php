@@ -1,0 +1,11 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Nueva Orden de Compra</h2>
+    </x-slot>
+
+    <div class="bg-white shadow-sm rounded-lg p-6">
+        <form method="POST" action="{{ route('compras.ordenes.store') }}">
+            @include('compras.ordenes.form', ['ordenCompra' => null, 'proveedores' => $proveedores, 'productos' => $productos])
+        </form>
+    </div>
+</x-app-layout>

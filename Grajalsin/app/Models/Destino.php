@@ -11,6 +11,7 @@ class Destino extends Model
 
     protected $fillable = [
         'nombre',
+        'estado',
         'estatus',
         'notas',
     ];

@@ -10,6 +10,7 @@
     </div>
 
     <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <x-catalog-toolbar route="lineas-carga.index" placeholder="Buscar por nombre o contacto..." />
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
@@ -51,7 +52,9 @@
                 @endforelse
             </tbody>
         </table>
-        <div class="p-4">{{ $lineas->links() }}</div>
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+            {{ $lineas->links() }}
+        </div>
     </div>
 </x-app-layout>
 

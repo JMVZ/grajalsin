@@ -122,10 +122,6 @@
                     </div>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-500 uppercase mb-1">Expediente Médico</label>
-                            <p class="text-base text-gray-700">{{ strtoupper($chofer->expediente_medico_numero ?? '---') }}</p>
-                        </div>
-                        <div>
                             <label class="block text-sm font-semibold text-gray-500 uppercase mb-1">Placa Tractor</label>
                             <p class="text-base text-gray-700">{{ strtoupper($preOrden->placa_tractor ?? '---') }}</p>
                         </div>

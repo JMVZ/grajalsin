@@ -10,10 +10,12 @@
     </div>
 
     <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <x-catalog-toolbar route="destinos.index" placeholder="Buscar por destino o estado..." />
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destino</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estatus</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notas</th>
                     <th class="px-4 py-2"></th>
@@ -23,6 +25,7 @@
                 @forelse($destinos as $destino)
                     <tr>
                         <td class="px-4 py-2 font-semibold">{{ $destino->nombre }}</td>
+                        <td class="px-4 py-2">{{ $destino->estado ?? '-' }}</td>
                         <td class="px-4 py-2">
                             @if($destino->estatus)
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span>
@@ -42,12 +45,14 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-6 text-center text-gray-500">Sin destinos registrados</td>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">Sin destinos registrados</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
-        <div class="p-4">{{ $destinos->links() }}</div>
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+            {{ $destinos->links() }}
+        </div>
     </div>
 </x-app-layout>
 

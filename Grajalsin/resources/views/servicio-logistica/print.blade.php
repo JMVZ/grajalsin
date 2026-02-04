@@ -164,10 +164,6 @@
                     <span class="field-value">{{ $servicio->operador_licencia_numero ?? ($servicio->chofer->licencia_numero ?? '') }}</span>
                 </div>
                 <div class="field-row">
-                    <span class="field-label">Expediente Medico:</span>
-                    <span class="field-value">{{ $servicio->operador_expediente_medico ?? ($servicio->chofer->expediente_medico_numero ?? '') }}</span>
-                </div>
-                <div class="field-row">
                     <span class="field-label">Curp y/o RFC:</span>
                     <span class="field-value">{{ $servicio->operador_curp_rfc ?? ($servicio->chofer->curp ?? '') }}</span>
                 </div>

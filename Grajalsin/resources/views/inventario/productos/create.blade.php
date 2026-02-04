@@ -43,6 +43,20 @@
                             @enderror
                         </div>
 
+                        <!-- Tipo de Producto -->
+                        <div>
+                            <label for="tipo_producto" class="block text-sm font-medium text-gray-700">Tipo de Producto *</label>
+                            <select name="tipo_producto" id="tipo_producto" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                                <option value="grano" {{ old('tipo_producto', 'grano') == 'grano' ? 'selected' : '' }}>Grano</option>
+                                <option value="costal" {{ old('tipo_producto') == 'costal' ? 'selected' : '' }}>Costal</option>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">Costal para insumos, Grano para granos</p>
+                            @error('tipo_producto')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Descripción -->
                         <div class="md:col-span-2">
                             <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>

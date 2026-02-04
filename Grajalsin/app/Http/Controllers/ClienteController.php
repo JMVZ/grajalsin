@@ -9,7 +9,18 @@ class ClienteController extends Controller
 {
     public function index()
     {
-        $clientes = Cliente::orderBy('nombre')->paginate(15);
+        $query = Cliente::query()->orderBy('nombre');
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('codigo', 'like', "%{$search}%")
+                    ->orWhere('rfc', 'like', "%{$search}%")
+                    ->orWhere('contacto', 'like', "%{$search}%")
+                    ->orWhere('celular', 'like', "%{$search}%")
+                    ->orWhere('telefono', 'like', "%{$search}%");
+            });
+        }
+        $clientes = $query->paginate(request('per_page', 15))->withQueryString();
         return view('clientes.index', compact('clientes'));
     }
 
@@ -25,7 +36,8 @@ class ClienteController extends Controller
             'codigo' => ['nullable', 'string', 'max:10', 'unique:clientes,codigo'],
             'rfc' => ['nullable', 'string', 'max:13'],
             'contacto' => ['nullable', 'string', 'max:255'],
-            'telefono' => ['nullable', 'string', 'max:20'],
+            'celular' => ['nullable', 'string', 'max:30'],
+            'telefono' => ['nullable', 'string', 'max:30'],
             'email' => ['nullable', 'email', 'max:255'],
             'direccion' => ['nullable', 'string'],
             'estatus' => ['nullable', 'boolean'],
@@ -51,7 +63,8 @@ class ClienteController extends Controller
             'codigo' => ['nullable', 'string', 'max:10', 'unique:clientes,codigo,' . $cliente->id],
             'rfc' => ['nullable', 'string', 'max:13'],
             'contacto' => ['nullable', 'string', 'max:255'],
-            'telefono' => ['nullable', 'string', 'max:20'],
+            'celular' => ['nullable', 'string', 'max:30'],
+            'telefono' => ['nullable', 'string', 'max:30'],
             'email' => ['nullable', 'email', 'max:255'],
             'direccion' => ['nullable', 'string'],
             'estatus' => ['nullable', 'boolean'],

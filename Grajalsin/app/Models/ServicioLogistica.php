@@ -25,7 +25,6 @@ class ServicioLogistica extends Model
         'operador_nombre',
         'operador_celular',
         'operador_licencia_numero',
-        'operador_expediente_medico',
         'operador_curp_rfc',
         'placa_tractor',
         'placa_remolque',

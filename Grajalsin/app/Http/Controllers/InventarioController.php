@@ -54,7 +54,15 @@ class InventarioController extends Controller
      */
     public function productos()
     {
-        $productos = Producto::orderBy('nombre')->get();
+        $query = Producto::query()->orderBy('nombre');
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('codigo', 'like', "%{$search}%")
+                    ->orWhere('descripcion', 'like', "%{$search}%");
+            });
+        }
+        $productos = $query->paginate(request('per_page', 15))->withQueryString();
         return view('inventario.productos.index', compact('productos'));
     }
 
@@ -73,7 +81,8 @@ class InventarioController extends Controller
     {
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
-            'codigo' => 'nullable|string|unique:productos,codigo',
+            'tipo_producto' => 'required|in:costal,grano',
+            'codigo' => 'nullable|string',
             'descripcion' => 'nullable|string',
             'unidad_medida' => 'required|string',
             'maneja_stock' => 'nullable',
@@ -88,6 +97,11 @@ class InventarioController extends Controller
 
         // Convertir maneja_stock a booleano
         $validated['maneja_stock'] = $request->has('maneja_stock') && $request->maneja_stock == '1';
+        
+        // Si el nombre empieza con "costal", asegurar que tipo_producto sea costal
+        if (stripos($validated['nombre'], 'costal') === 0) {
+            $validated['tipo_producto'] = 'costal';
+        }
         
         // Si no maneja stock, asegurar que stock_actual sea 0
         if (!$validated['maneja_stock']) {
@@ -121,7 +135,7 @@ class InventarioController extends Controller
     {
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
-            'codigo' => 'nullable|string|unique:productos,codigo,' . $producto->id,
+            'codigo' => 'nullable|string',
             'descripcion' => 'nullable|string',
             'unidad_medida' => 'required|string',
             'maneja_stock' => 'nullable',
@@ -174,10 +188,12 @@ class InventarioController extends Controller
      */
     public function movimientos()
     {
-        $movimientos = Movimiento::with(['producto', 'usuario'])
-            ->orderBy('fecha_movimiento', 'desc')
-            ->paginate(20);
-        
+        $query = Movimiento::with(['producto', 'usuario'])
+            ->orderBy('fecha_movimiento', 'desc');
+        if ($search = request('search')) {
+            $query->whereHas('producto', fn($q) => $q->where('nombre', 'like', "%{$search}%"));
+        }
+        $movimientos = $query->paginate(request('per_page', 20))->withQueryString();
         return view('inventario.movimientos.index', compact('movimientos'));
     }
 
@@ -227,10 +243,12 @@ class InventarioController extends Controller
      */
     public function perdidas()
     {
-        $perdidas = Perdida::with(['producto', 'usuario'])
-            ->orderBy('fecha_deteccion', 'desc')
-            ->paginate(20);
-        
+        $query = Perdida::with(['producto', 'usuario'])
+            ->orderBy('fecha_deteccion', 'desc');
+        if ($search = request('search')) {
+            $query->whereHas('producto', fn($q) => $q->where('nombre', 'like', "%{$search}%"));
+        }
+        $perdidas = $query->paginate(request('per_page', 20))->withQueryString();
         return view('inventario.perdidas.index', compact('perdidas'));
     }
 

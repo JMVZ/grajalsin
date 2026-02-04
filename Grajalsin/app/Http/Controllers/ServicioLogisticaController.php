@@ -18,10 +18,16 @@ class ServicioLogisticaController extends Controller
      */
     public function index()
     {
-        $servicios = ServicioLogistica::with(['cliente', 'lineaCarga', 'chofer', 'destino', 'usuario'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
-        
+        $query = ServicioLogistica::with(['cliente', 'lineaCarga', 'chofer', 'destino', 'usuario'])
+            ->orderBy('created_at', 'desc');
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('folio', 'like', "%{$search}%")
+                    ->orWhereHas('cliente', fn($c) => $c->where('nombre', 'like', "%{$search}%"))
+                    ->orWhereHas('lineaCarga', fn($l) => $l->where('nombre', 'like', "%{$search}%"));
+            });
+        }
+        $servicios = $query->paginate(request('per_page', 15))->withQueryString();
         return view('servicio-logistica.index', compact('servicios'));
     }
 
@@ -127,7 +133,6 @@ class ServicioLogisticaController extends Controller
             'operador_nombre' => ['required', 'string', 'max:255'],
             'operador_celular' => ['nullable', 'string', 'max:20'],
             'operador_licencia_numero' => ['nullable', 'string', 'max:255'],
-            'operador_expediente_medico' => ['nullable', 'string', 'max:255'],
             'operador_curp_rfc' => ['nullable', 'string', 'max:255'],
             'placa_tractor' => ['nullable', 'string', 'max:255'],
             'placa_remolque' => ['nullable', 'string', 'max:255'],

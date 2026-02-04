@@ -6,7 +6,10 @@
         <input type="text" name="nombre" value="{{ old('nombre', $destino->nombre ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" required placeholder="Ej: MORELIA">
         @error('nombre')<p class="text-sm text-red-600">{{ $message }}</p>@enderror
     </div>
-
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Estado</label>
+        <input type="text" name="estado" value="{{ old('estado', $destino->estado ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ej: Baja California">
+    </div>
     <div class="flex items-center space-x-2">
         <input type="checkbox" name="estatus" value="1" class="rounded border-gray-300 text-green-600 focus:ring-green-500" {{ old('estatus', ($destino->estatus ?? true)) ? 'checked' : '' }}>
         <span class="text-sm text-gray-700">Activo</span>

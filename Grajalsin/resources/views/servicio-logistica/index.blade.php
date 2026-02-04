@@ -18,7 +18,8 @@
 
     <div class="space-y-6">
         <!-- Lista de Servicios -->
-        <div class="bg-white shadow rounded-lg border border-purple-200">
+        <div class="bg-white shadow rounded-lg border border-purple-200 overflow-hidden">
+            <x-catalog-toolbar route="servicio-logistica.index" placeholder="Buscar por folio, cliente o línea..." />
             <div class="px-4 py-5 sm:p-6">
                 <div class="overflow-x-auto -mx-4 sm:mx-0">
                     <div class="inline-block min-w-full align-middle">
@@ -94,11 +95,9 @@
                         </table>
                     </div>
                 </div>
-
-                <!-- Paginación -->
-                <div class="mt-4">
-                    {{ $servicios->links() }}
-                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                {{ $servicios->links() }}
             </div>
         </div>
     </div>

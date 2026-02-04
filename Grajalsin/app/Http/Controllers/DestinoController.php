@@ -9,7 +9,14 @@ class DestinoController extends Controller
 {
     public function index()
     {
-        $destinos = Destino::orderBy('nombre')->paginate(15);
+        $query = Destino::query()->orderBy('nombre');
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('estado', 'like', "%{$search}%");
+            });
+        }
+        $destinos = $query->paginate(request('per_page', 15))->withQueryString();
         return view('destinos.index', compact('destinos'));
     }
 
@@ -22,6 +29,7 @@ class DestinoController extends Controller
     {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
+            'estado' => ['nullable', 'string', 'max:100'],
             'estatus' => ['nullable', 'boolean'],
             'notas' => ['nullable', 'string'],
         ]);
@@ -42,6 +50,7 @@ class DestinoController extends Controller
     {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
+            'estado' => ['nullable', 'string', 'max:100'],
             'estatus' => ['nullable', 'boolean'],
             'notas' => ['nullable', 'string'],
         ]);

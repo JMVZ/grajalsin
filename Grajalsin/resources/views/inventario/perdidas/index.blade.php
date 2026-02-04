@@ -18,7 +18,8 @@
 
     <div class="space-y-6">
         <!-- Lista de Pérdidas -->
-        <div class="bg-white shadow rounded-lg border border-green-200">
+        <div class="bg-white shadow rounded-lg border border-green-200 overflow-hidden">
+            <x-catalog-toolbar route="inventario.perdidas" placeholder="Buscar por producto..." />
             <div class="px-4 py-5 sm:p-6">
                 <div class="overflow-x-auto -mx-4 sm:mx-0">
                     <div class="inline-block min-w-full align-middle">
@@ -102,12 +103,8 @@
                     </table>
                 </div>
             </div>
-        </div>
-
-                <!-- Paginación -->
-                <div class="mt-4">
-                    {{ $perdidas->links() }}
-                </div>
+            <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                {{ $perdidas->links() }}
             </div>
         </div>
     </div>

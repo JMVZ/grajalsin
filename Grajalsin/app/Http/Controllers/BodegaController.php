@@ -9,7 +9,15 @@ class BodegaController extends Controller
 {
     public function index()
     {
-        $bodegas = Bodega::where('estatus', true)->orderBy('nombre')->paginate(15);
+        $query = Bodega::query()->where('estatus', true)->orderBy('nombre');
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('ubicacion', 'like', "%{$search}%")
+                    ->orWhere('clave', 'like', "%{$search}%");
+            });
+        }
+        $bodegas = $query->paginate(request('per_page', 15))->withQueryString();
         return view('bodegas.index', compact('bodegas'));
     }
 
@@ -22,6 +30,7 @@ class BodegaController extends Controller
     {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
+            'clave' => ['nullable', 'string', 'max:20'],
             'ubicacion' => ['nullable', 'string', 'max:255'],
             'estatus' => ['nullable', 'boolean'],
             'notas' => ['nullable', 'string'],
@@ -41,6 +50,7 @@ class BodegaController extends Controller
     {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
+            'clave' => ['nullable', 'string', 'max:20'],
             'ubicacion' => ['nullable', 'string', 'max:255'],
             'estatus' => ['nullable', 'boolean'],
             'notas' => ['nullable', 'string'],

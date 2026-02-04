@@ -14,6 +14,7 @@ class Cliente extends Model
         'codigo',
         'rfc',
         'contacto',
+        'celular',
         'telefono',
         'email',
         'direccion',

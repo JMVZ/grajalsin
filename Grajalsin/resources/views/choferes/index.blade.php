@@ -10,6 +10,7 @@
     </div>
 
     <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <x-catalog-toolbar route="choferes.index" placeholder="Buscar por nombre, teléfono, CURP o licencia..." />
         <div class="overflow-x-auto -mx-4 sm:mx-0">
             <div class="inline-block min-w-full align-middle">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -57,7 +58,9 @@
                 </table>
             </div>
         </div>
-        <div class="p-4">{{ $choferes->links() }}</div>
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+            {{ $choferes->links() }}
+        </div>
     </div>
 </x-app-layout>
 

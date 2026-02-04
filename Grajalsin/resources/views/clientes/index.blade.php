@@ -10,6 +10,7 @@
     </div>
 
     <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <x-catalog-toolbar route="clientes.index" placeholder="Buscar por nombre, código, RFC o contacto..." />
         <div class="overflow-x-auto -mx-4 sm:mx-0">
             <div class="inline-block min-w-full align-middle">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -19,7 +20,7 @@
                             <th class="px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
                             <th class="hidden md:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">RFC</th>
                             <th class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</th>
-                            <th class="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                            <th class="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cel / Tel</th>
                             <th class="px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estatus</th>
                             <th class="px-3 py-2 sm:px-4 sm:py-2"></th>
                         </tr>
@@ -32,11 +33,17 @@
                                     <div class="text-sm font-medium">{{ $cliente->nombre }}</div>
                                     <div class="md:hidden text-xs text-gray-500 mt-1">RFC: {{ $cliente->rfc }}</div>
                                     <div class="lg:hidden md:block text-xs text-gray-500 mt-1">Contacto: {{ $cliente->contacto }}</div>
-                                    <div class="sm:hidden text-xs text-gray-500 mt-1">Tel: {{ $cliente->telefono }}</div>
+                                    <div class="sm:hidden text-xs text-gray-500 mt-1">Cel: {{ $cliente->celular }} / Tel: {{ $cliente->telefono }}</div>
                                 </td>
                                 <td class="hidden md:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $cliente->rfc }}</td>
                                 <td class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $cliente->contacto }}</td>
-                                <td class="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $cliente->telefono }}</td>
+                                <td class="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">
+                                    @if($cliente->celular || $cliente->telefono)
+                                        <span>{{ $cliente->celular }}</span>@if($cliente->celular && $cliente->telefono)<span class="text-gray-400"> / </span>@endif<span>{{ $cliente->telefono }}</span>
+                                    @else
+                                        —
+                                    @endif
+                                </td>
                                 <td class="px-3 py-2 sm:px-4 sm:py-2">
                                     @if($cliente->estatus)
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span>
@@ -64,7 +71,9 @@
                 </table>
             </div>
         </div>
-        <div class="p-4">{{ $clientes->links() }}</div>
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+            {{ $clientes->links() }}
+        </div>
     </div>
 </x-app-layout>
 

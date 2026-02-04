@@ -9,7 +9,14 @@ class LineaCargaController extends Controller
 {
     public function index()
     {
-        $lineas = LineaCarga::orderBy('nombre')->paginate(15);
+        $query = LineaCarga::query()->orderBy('nombre');
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('contacto', 'like', "%{$search}%");
+            });
+        }
+        $lineas = $query->paginate(request('per_page', 15))->withQueryString();
         return view('lineas-carga.index', compact('lineas'));
     }
 

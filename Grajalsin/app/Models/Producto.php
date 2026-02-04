@@ -12,6 +12,7 @@ class Producto extends Model
 
     protected $fillable = [
         'nombre',
+        'tipo_producto',
         'codigo',
         'descripcion',
         'unidad_medida',
@@ -130,6 +131,22 @@ class Producto extends Model
     public function scopeSinStock($query)
     {
         return $query->where('maneja_stock', false);
+    }
+
+    /**
+     * Scope para productos tipo costal
+     */
+    public function scopeCostales($query)
+    {
+        return $query->where('tipo_producto', 'costal');
+    }
+
+    /**
+     * Scope para productos tipo grano
+     */
+    public function scopeGranos($query)
+    {
+        return $query->where('tipo_producto', 'grano');
     }
 }
 

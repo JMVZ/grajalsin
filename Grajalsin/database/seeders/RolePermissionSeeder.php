@@ -109,16 +109,16 @@ class RolePermissionSeeder extends Seeder
                 'icon' => 'M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
                 'route' => 'ventas.index',
                 'order' => 3,
-                'is_active' => false
+                'is_active' => true
             ],
             [
                 'name' => 'Compras',
                 'slug' => 'compras',
-                'description' => 'Gestión de compras de granos',
+                'description' => 'Gestión de compras (insumos y granos)',
                 'icon' => 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1',
                 'route' => 'compras.index',
                 'order' => 4,
-                'is_active' => false
+                'is_active' => true
             ],
             [
                 'name' => 'Reportes',
@@ -150,7 +150,7 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($modules as $moduleData) {
-            Module::firstOrCreate(['slug' => $moduleData['slug']], $moduleData);
+            Module::updateOrCreate(['slug' => $moduleData['slug']], $moduleData);
         }
 
         // Asignar módulos a roles usando la tabla pivot directamente

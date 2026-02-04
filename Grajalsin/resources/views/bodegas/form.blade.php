@@ -7,6 +7,10 @@
         @error('nombre')<p class="text-sm text-red-600">{{ $message }}</p>@enderror
     </div>
     <div>
+        <label class="block text-sm font-medium text-gray-700">Clave</label>
+        <input type="text" name="clave" value="{{ old('clave', $bodega->clave ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300" placeholder="Ej: B-001">
+    </div>
+    <div>
         <label class="block text-sm font-medium text-gray-700">Ubicación</label>
         <input type="text" name="ubicacion" value="{{ old('ubicacion', $bodega->ubicacion ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300">
     </div>

@@ -191,7 +191,6 @@
                 <td>
                     <div class="row">
                         <div class="row-item"><span class="label">CURP:</span><span class="dots"></span><span>{{ strtoupper($chofer->curp ?? '') }}</span></div>
-                        <div class="row-item"><span class="label">Expediente médico:</span><span class="dots"></span><span>{{ strtoupper($chofer->expediente_medico_numero ?? '') }}</span></div>
                     </div>
                 </td>
             </tr>

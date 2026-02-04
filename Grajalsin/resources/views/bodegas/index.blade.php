@@ -8,9 +8,11 @@
     </div>
 
     <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <x-catalog-toolbar route="bodegas.index" placeholder="Buscar por nombre, clave o ubicación..." />
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Clave</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ubicación</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estatus</th>
@@ -20,6 +22,7 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($bodegas as $bodega)
                     <tr>
+                        <td class="px-4 py-2 font-mono text-sm">{{ $bodega->clave ?? '-' }}</td>
                         <td class="px-4 py-2">{{ $bodega->nombre }}</td>
                         <td class="px-4 py-2">{{ $bodega->ubicacion }}</td>
                         <td class="px-4 py-2">{{ $bodega->estatus ? 'Activa' : 'Inactiva' }}</td>
@@ -34,12 +37,14 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-6 text-center text-gray-500">Sin bodegas registradas</td>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">Sin bodegas registradas</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
-        <div class="p-4">{{ $bodegas->links() }}</div>
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+            {{ $bodegas->links() }}
+        </div>
     </div>
 </x-app-layout>
 
