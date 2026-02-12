@@ -15,7 +15,8 @@ class ChoferController extends Controller
                 $q->where('nombre', 'like', "%{$search}%")
                     ->orWhere('telefono', 'like', "%{$search}%")
                     ->orWhere('curp', 'like', "%{$search}%")
-                    ->orWhere('licencia_numero', 'like', "%{$search}%");
+                    ->orWhere('licencia_numero', 'like', "%{$search}%")
+                    ->orWhere('expediente_medico_numero', 'like', "%{$search}%");
             });
         }
         $choferes = $query->paginate(request('per_page', 15))->withQueryString();
@@ -34,8 +35,8 @@ class ChoferController extends Controller
             'telefono' => ['nullable', 'string', 'max:20'],
             'curp' => ['nullable', 'string', 'max:18'],
             'licencia_numero' => ['nullable', 'string', 'max:255'],
-            'licencia_tipo' => ['nullable', 'string', 'max:20'],
-            'licencia_vence' => ['nullable', 'date'],
+            'expediente_medico_numero' => ['nullable', 'string', 'max:255'],
+            'expediente_medico_vence' => ['nullable', 'date'],
             'estatus' => ['nullable', 'boolean'],
             'notas' => ['nullable', 'string'],
         ]);
@@ -59,8 +60,8 @@ class ChoferController extends Controller
             'telefono' => ['nullable', 'string', 'max:20'],
             'curp' => ['nullable', 'string', 'max:18'],
             'licencia_numero' => ['nullable', 'string', 'max:255'],
-            'licencia_tipo' => ['nullable', 'string', 'max:20'],
-            'licencia_vence' => ['nullable', 'date'],
+            'expediente_medico_numero' => ['nullable', 'string', 'max:255'],
+            'expediente_medico_vence' => ['nullable', 'date'],
             'estatus' => ['nullable', 'boolean'],
             'notas' => ['nullable', 'string'],
         ]);

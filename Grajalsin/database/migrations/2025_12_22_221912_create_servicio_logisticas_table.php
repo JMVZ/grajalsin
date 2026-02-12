@@ -22,8 +22,8 @@ return new class extends Migration
             $table->enum('tipo_unidad', ['thermo', 'caja_seca', 'jaula', 'plataforma'])->default('caja_seca');
             $table->enum('tipo_carga', ['simple', 'completa'])->default('simple');
             
-            // Paso 2: Contacto con línea de transporte
-            $table->foreignId('linea_carga_id')->constrained('lineas_carga')->onDelete('cascade');
+            // Paso 2: Contacto con línea de transporte (nullable porque se completa en paso 2)
+            $table->foreignId('linea_carga_id')->nullable()->constrained('lineas_carga')->onDelete('cascade');
             $table->decimal('tarifa', 10, 2)->nullable();
             $table->decimal('comision_porcentaje', 5, 2)->nullable();
             $table->decimal('comision_monto', 10, 2)->nullable();

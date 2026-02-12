@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bodega;
 use App\Models\Cliente;
 use App\Models\Destino;
+use App\Models\MovimientoCuentaCliente;
 use App\Models\PedidoVenta;
 use App\Models\Producto;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class PedidoVentaController extends Controller
 
     public function create()
     {
-        $clientes = Cliente::where('estatus', true)->orderBy('nombre')->get();
+        $clientes = Cliente::where('estatus', true)->orderBy('codigo')->get();
         $bodegas = Bodega::where('estatus', true)->orderBy('nombre')->get();
         $destinos = Destino::where('estatus', true)->orderBy('nombre')->get();
         // Productos para tipo de costal (preferir costales; si no hay, mostrar todos)
@@ -46,6 +47,7 @@ class PedidoVentaController extends Controller
             'destino_id' => ['required', 'exists:destinos,id'],
             'producto_id' => ['nullable', 'exists:productos,id'],
             'fecha_entrega' => ['required', 'date'],
+            'forma_pago' => ['nullable', 'string', 'in:contado,credito'],
             'notas' => ['nullable', 'string'],
         ]);
 
@@ -61,9 +63,24 @@ class PedidoVentaController extends Controller
             'producto_id' => $validated['producto_id'] ?? null,
             'fecha_entrega' => $validated['fecha_entrega'],
             'estatus' => 'activa',
+            'forma_pago' => $validated['forma_pago'] ?? 'contado',
             'notas' => $validated['notas'] ?? null,
             'user_id' => auth()->id(),
         ]);
+
+        if (($validated['forma_pago'] ?? 'contado') === 'credito') {
+            MovimientoCuentaCliente::create([
+                'cliente_id' => $pedido->cliente_id,
+                'fecha' => $pedido->fecha,
+                'tipo' => 'cargo',
+                'concepto' => 'venta',
+                'monto' => $pedido->importe_total,
+                'referencia_tipo' => PedidoVenta::class,
+                'referencia_id' => $pedido->id,
+                'notas' => 'Pedido ' . $pedido->folio,
+                'user_id' => auth()->id(),
+            ]);
+        }
 
         return redirect()->route('ventas.pedidos.show', $pedido)
             ->with('success', 'Pedido de venta creado correctamente.');
@@ -87,7 +104,7 @@ class PedidoVentaController extends Controller
             return redirect()->route('ventas.pedidos.show', $pedidoVenta)
                 ->with('error', 'No se pueden editar pedidos cancelados');
         }
-        $clientes = Cliente::where('estatus', true)->orderBy('nombre')->get();
+        $clientes = Cliente::where('estatus', true)->orderBy('codigo')->get();
         $bodegas = Bodega::where('estatus', true)->orderBy('nombre')->get();
         $destinos = Destino::where('estatus', true)->orderBy('nombre')->get();
         // Productos para tipo de costal (preferir costales; si no hay, mostrar todos)
@@ -112,8 +129,14 @@ class PedidoVentaController extends Controller
             'destino_id' => ['required', 'exists:destinos,id'],
             'producto_id' => ['nullable', 'exists:productos,id'],
             'fecha_entrega' => ['required', 'date'],
+            'forma_pago' => ['nullable', 'string', 'in:contado,credito'],
             'notas' => ['nullable', 'string'],
         ]);
+
+        $formaPago = $validated['forma_pago'] ?? 'contado';
+        $movimientoExistente = MovimientoCuentaCliente::where('referencia_tipo', PedidoVenta::class)
+            ->where('referencia_id', $pedidoVenta->id)
+            ->first();
 
         $pedidoVenta->update([
             'fecha' => $validated['fecha'],
@@ -125,8 +148,33 @@ class PedidoVentaController extends Controller
             'destino_id' => $validated['destino_id'],
             'producto_id' => $validated['producto_id'] ?? null,
             'fecha_entrega' => $validated['fecha_entrega'],
+            'forma_pago' => $formaPago,
             'notas' => $validated['notas'] ?? null,
         ]);
+
+        if ($formaPago === 'credito') {
+            if ($movimientoExistente) {
+                $movimientoExistente->update([
+                    'fecha' => $pedidoVenta->fecha,
+                    'monto' => $pedidoVenta->importe_total,
+                    'cliente_id' => $pedidoVenta->cliente_id,
+                ]);
+            } else {
+                MovimientoCuentaCliente::create([
+                    'cliente_id' => $pedidoVenta->cliente_id,
+                    'fecha' => $pedidoVenta->fecha,
+                    'tipo' => 'cargo',
+                    'concepto' => 'venta',
+                    'monto' => $pedidoVenta->importe_total,
+                    'referencia_tipo' => PedidoVenta::class,
+                    'referencia_id' => $pedidoVenta->id,
+                    'notas' => 'Pedido ' . $pedidoVenta->folio,
+                    'user_id' => auth()->id(),
+                ]);
+            }
+        } elseif ($movimientoExistente) {
+            $movimientoExistente->delete();
+        }
 
         return redirect()->route('ventas.pedidos.show', $pedidoVenta)
             ->with('success', 'Pedido de venta actualizado correctamente.');

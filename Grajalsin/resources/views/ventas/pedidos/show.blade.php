@@ -86,6 +86,10 @@
                     <p class="font-semibold text-green-700">${{ number_format($pedidoVenta->importe_total, 2) }}</p>
                 </div>
                 <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Forma de pago</p>
+                    <p>{{ ($pedidoVenta->forma_pago ?? 'contado') === 'credito' ? 'Crédito (carga a cobranza)' : 'Contado' }}</p>
+                </div>
+                <div>
                     <p class="text-xs font-medium text-gray-500 uppercase">Estatus</p>
                     <span class="px-2 py-1 text-xs rounded-full
                         @if($pedidoVenta->estatus === 'activa') bg-green-100 text-green-800

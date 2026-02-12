@@ -23,6 +23,7 @@ class PedidoVenta extends Model
         'producto_id',
         'fecha_entrega',
         'estatus',
+        'forma_pago',
         'notas',
         'user_id',
     ];
@@ -65,9 +66,13 @@ class PedidoVenta extends Model
         return (float) ($this->toneladas * $this->precio_venta);
     }
 
+    /**
+     * Total a pagar a Grajalsin (solo producto).
+     * La tarifa de flete se paga directo a la línea de transporte; no se suma al total.
+     */
     public function getImporteTotalAttribute(): float
     {
-        return $this->importe_subtotal + (float) $this->tarifa_flete;
+        return (float) $this->importe_subtotal;
     }
 
     public static function generarFolio(): string

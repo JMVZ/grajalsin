@@ -20,12 +20,15 @@ class Chofer extends Model
         'licencia_numero',
         'licencia_tipo',
         'licencia_vence',
+        'expediente_medico_numero',
+        'expediente_medico_vence',
         'estatus',
         'notas',
     ];
 
     protected $casts = [
         'licencia_vence' => 'date',
+        'expediente_medico_vence' => 'date',
         'estatus' => 'boolean',
     ];
 }

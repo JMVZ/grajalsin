@@ -26,7 +26,7 @@ class PreOrdenController extends Controller
         $choferes = Chofer::where('estatus', true)->orderBy('nombre')->get();
         $lineasCarga = LineaCarga::where('estatus', true)->orderBy('nombre')->get();
         $destinos = Destino::where('estatus', true)->orderBy('nombre')->get();
-        $clientes = Cliente::where('estatus', true)->orderBy('nombre')->get();
+        $clientes = Cliente::where('estatus', true)->orderBy('codigo')->get();
         $productos = Producto::where('activo', true)->orderBy('nombre')->get();
         
         return view('pre-ordenes.create', compact('choferes', 'lineasCarga', 'destinos', 'clientes', 'productos'));
@@ -117,7 +117,7 @@ class PreOrdenController extends Controller
         $choferes = Chofer::where('estatus', true)->orderBy('nombre')->get();
         $lineasCarga = LineaCarga::where('estatus', true)->orderBy('nombre')->get();
         $destinos = Destino::where('estatus', true)->orderBy('nombre')->get();
-        $clientes = Cliente::where('estatus', true)->orderBy('nombre')->get();
+        $clientes = Cliente::where('estatus', true)->orderBy('codigo')->get();
         $productos = Producto::where('activo', true)->orderBy('nombre')->get();
         
         return view('pre-ordenes.edit', compact('preOrden', 'choferes', 'lineasCarga', 'destinos', 'clientes', 'productos'));

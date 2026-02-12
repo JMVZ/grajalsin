@@ -20,7 +20,7 @@
                             <th class="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
                             <th class="hidden md:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CURP</th>
                             <th class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Licencia</th>
-                            <th class="hidden xl:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vigencia</th>
+                            <th class="hidden xl:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exp. médico</th>
                             <th class="px-3 py-2 sm:px-4 sm:py-2"></th>
                         </tr>
                     </thead>
@@ -31,13 +31,13 @@
                                     <div class="text-sm font-medium">{{ $chofer->nombre }}</div>
                                     <div class="sm:hidden text-xs text-gray-500 mt-1">Tel: {{ $chofer->telefono }}</div>
                                     <div class="md:hidden sm:block text-xs text-gray-500 mt-1">CURP: {{ substr($chofer->curp, 0, 13) }}...</div>
-                                    <div class="lg:hidden md:block text-xs text-gray-500 mt-1">{{ $chofer->licencia_tipo }} {{ $chofer->licencia_numero }}</div>
-                                    <div class="xl:hidden lg:block text-xs text-gray-500 mt-1">Vence: {{ optional($chofer->licencia_vence)->format('d/m/Y') }}</div>
+                                    <div class="lg:hidden md:block text-xs text-gray-500 mt-1">{{ $chofer->licencia_numero }}</div>
+                                    <div class="xl:hidden lg:block text-xs text-gray-500 mt-1">Exp. vence: {{ optional($chofer->expediente_medico_vence)->format('d/m/Y') ?: '—' }}</div>
                                 </td>
                                 <td class="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $chofer->telefono }}</td>
                                 <td class="hidden md:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $chofer->curp }}</td>
-                                <td class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $chofer->licencia_tipo }} {{ $chofer->licencia_numero }}</td>
-                                <td class="hidden xl:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ optional($chofer->licencia_vence)->format('d/m/Y') }}</td>
+                                <td class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $chofer->licencia_numero ?? '—' }}</td>
+                                <td class="hidden xl:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $chofer->expediente_medico_numero ?: (optional($chofer->expediente_medico_vence)->format('d/m/Y') ?: '—') }}</td>
                                 <td class="px-3 py-2 sm:px-4 sm:py-2 text-right">
                                     <div class="flex flex-col sm:flex-row sm:space-x-2 space-y-1 sm:space-y-0">
                                         <a href="{{ route('choferes.edit', $chofer) }}" class="text-blue-600 hover:text-blue-800 text-xs sm:text-sm">Editar</a>

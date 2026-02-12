@@ -10,7 +10,7 @@
     </div>
 
     <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-        <x-catalog-toolbar route="clientes.index" placeholder="Buscar por nombre, código, RFC o contacto..." />
+        <x-catalog-toolbar route="clientes.index" placeholder="Buscar por nombre, código, RFC, contacto o email..." />
         <div class="overflow-x-auto -mx-4 sm:mx-0">
             <div class="inline-block min-w-full align-middle">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -21,6 +21,7 @@
                             <th class="hidden md:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">RFC</th>
                             <th class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</th>
                             <th class="hidden sm:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cel / Tel</th>
+                            <th class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                             <th class="px-3 py-2 sm:px-4 sm:py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estatus</th>
                             <th class="px-3 py-2 sm:px-4 sm:py-2"></th>
                         </tr>
@@ -34,6 +35,7 @@
                                     <div class="md:hidden text-xs text-gray-500 mt-1">RFC: {{ $cliente->rfc }}</div>
                                     <div class="lg:hidden md:block text-xs text-gray-500 mt-1">Contacto: {{ $cliente->contacto }}</div>
                                     <div class="sm:hidden text-xs text-gray-500 mt-1">Cel: {{ $cliente->celular }} / Tel: {{ $cliente->telefono }}</div>
+                                    <div class="lg:hidden text-xs text-gray-500 mt-1">Email: {{ $cliente->email ?? '—' }}</div>
                                 </td>
                                 <td class="hidden md:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $cliente->rfc }}</td>
                                 <td class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $cliente->contacto }}</td>
@@ -44,6 +46,7 @@
                                         —
                                     @endif
                                 </td>
+                                <td class="hidden lg:table-cell px-3 py-2 sm:px-4 sm:py-2 text-sm">{{ $cliente->email ?? '—' }}</td>
                                 <td class="px-3 py-2 sm:px-4 sm:py-2">
                                     @if($cliente->estatus)
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span>
@@ -64,7 +67,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-4 py-6 text-center text-gray-500">Sin clientes registrados</td>
+                                <td colspan="8" class="px-4 py-6 text-center text-gray-500">Sin clientes registrados</td>
                             </tr>
                         @endforelse
                     </tbody>

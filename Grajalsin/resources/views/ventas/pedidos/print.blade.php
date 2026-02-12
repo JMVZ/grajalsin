@@ -101,14 +101,14 @@
                     <td class="text-right">${{ number_format($pedidoVenta->importe_subtotal, 2) }}</td>
                 </tr>
                 <tr>
-                    <td>Tarifa de flete</td>
+                    <td>Tarifa de flete <span style="font-size: 10px; color: #666;">(pago directo a línea de transporte)</span></td>
                     <td class="text-right">${{ number_format($pedidoVenta->tarifa_flete, 2) }}</td>
                 </tr>
             </tbody>
         </table>
 
         <div class="totales">
-            <p class="total">TOTAL: ${{ number_format($pedidoVenta->importe_total, 2) }}</p>
+            <p class="total">TOTAL A PAGAR A GRAJALSIN: ${{ number_format($pedidoVenta->importe_total, 2) }}</p>
         </div>
 
         @if($pedidoVenta->notas)

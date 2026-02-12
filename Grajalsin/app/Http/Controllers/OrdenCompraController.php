@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movimiento;
+use App\Models\MovimientoCuentaProveedor;
 use App\Models\OrdenCompra;
 use App\Models\OrdenCompraLinea;
 use App\Models\Proveedor;
@@ -42,6 +43,7 @@ class OrdenCompraController extends Controller
             'fecha' => ['required', 'date'],
             'proveedor_id' => ['required', 'exists:proveedores,id'],
             'forma_pago' => ['nullable', 'string', 'max:100'],
+            'tipo_compra' => ['nullable', 'string', 'in:contado,credito'],
             'uso_cfdi' => ['nullable', 'string', 'max:100'],
             'elaborado_por' => ['nullable', 'string', 'max:100'],
             'solicitado_por' => ['nullable', 'string', 'max:100'],
@@ -59,11 +61,12 @@ class OrdenCompraController extends Controller
             'fecha' => $validated['fecha'],
             'proveedor_id' => $validated['proveedor_id'],
             'forma_pago' => $validated['forma_pago'] ?? null,
+            'tipo_compra' => $validated['tipo_compra'] ?? 'contado',
             'uso_cfdi' => $validated['uso_cfdi'] ?? null,
             'elaborado_por' => $validated['elaborado_por'] ?? null,
             'solicitado_por' => $validated['solicitado_por'] ?? null,
             'notas' => $validated['notas'] ?? null,
-            'estatus' => 'activa',
+            'estatus' => 'borrador',
             'user_id' => auth()->id(),
         ]);
 
@@ -81,6 +84,24 @@ class OrdenCompraController extends Controller
         }
 
         $orden->recalcularTotales();
+        $orden->load('lineas');
+
+        if (($validated['tipo_compra'] ?? 'contado') === 'credito') {
+            $monto = (float) $orden->lineas->sum('importe');
+            if ($monto > 0) {
+                MovimientoCuentaProveedor::create([
+                    'proveedor_id' => $orden->proveedor_id,
+                    'fecha' => $orden->fecha,
+                    'tipo' => 'cargo',
+                    'concepto' => 'compra',
+                    'monto' => $monto,
+                    'referencia_tipo' => OrdenCompra::class,
+                    'referencia_id' => $orden->id,
+                    'notas' => 'Orden ' . $orden->folio,
+                    'user_id' => auth()->id(),
+                ]);
+            }
+        }
 
         // Insumos y granos afectan inventario al crear la orden
         $movimientosCreados = 0;
@@ -151,6 +172,7 @@ class OrdenCompraController extends Controller
             'fecha' => ['required', 'date'],
             'proveedor_id' => ['required', 'exists:proveedores,id'],
             'forma_pago' => ['nullable', 'string', 'max:100'],
+            'tipo_compra' => ['nullable', 'string', 'in:contado,credito'],
             'uso_cfdi' => ['nullable', 'string', 'max:100'],
             'elaborado_por' => ['nullable', 'string', 'max:100'],
             'solicitado_por' => ['nullable', 'string', 'max:100'],
@@ -162,10 +184,16 @@ class OrdenCompraController extends Controller
             'lineas.*.producto_id' => ['nullable', 'exists:productos,id'],
         ]);
 
+        $tipoCompra = $validated['tipo_compra'] ?? 'contado';
+        $movimientoExistente = MovimientoCuentaProveedor::where('referencia_tipo', OrdenCompra::class)
+            ->where('referencia_id', $ordenCompra->id)
+            ->first();
+
         $ordenCompra->update([
             'fecha' => $validated['fecha'],
             'proveedor_id' => $validated['proveedor_id'],
             'forma_pago' => $validated['forma_pago'] ?? null,
+            'tipo_compra' => $tipoCompra,
             'uso_cfdi' => $validated['uso_cfdi'] ?? null,
             'elaborado_por' => $validated['elaborado_por'] ?? null,
             'solicitado_por' => $validated['solicitado_por'] ?? null,
@@ -188,6 +216,32 @@ class OrdenCompraController extends Controller
         }
 
         $ordenCompra->recalcularTotales();
+        $ordenCompra->load('lineas');
+        $montoOrden = (float) $ordenCompra->lineas->sum('importe');
+
+        if ($tipoCompra === 'credito') {
+            if ($movimientoExistente) {
+                $movimientoExistente->update([
+                    'fecha' => $ordenCompra->fecha,
+                    'monto' => $montoOrden,
+                    'proveedor_id' => $ordenCompra->proveedor_id,
+                ]);
+            } elseif ($montoOrden > 0) {
+                MovimientoCuentaProveedor::create([
+                    'proveedor_id' => $ordenCompra->proveedor_id,
+                    'fecha' => $ordenCompra->fecha,
+                    'tipo' => 'cargo',
+                    'concepto' => 'compra',
+                    'monto' => $montoOrden,
+                    'referencia_tipo' => OrdenCompra::class,
+                    'referencia_id' => $ordenCompra->id,
+                    'notas' => 'Orden ' . $ordenCompra->folio,
+                    'user_id' => auth()->id(),
+                ]);
+            }
+        } elseif ($movimientoExistente) {
+            $movimientoExistente->delete();
+        }
 
         return redirect()->route('compras.ordenes.show', $ordenCompra)
             ->with('success', 'Orden de compra actualizada');

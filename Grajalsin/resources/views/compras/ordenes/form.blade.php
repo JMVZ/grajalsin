@@ -31,8 +31,16 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Forma de Pago</label>
-                <input type="text" name="forma_pago" value="{{ old('forma_pago', optional($ordenCompra)->forma_pago ?? '') }}" placeholder="Ej: Transferencia PPD" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                <input type="text" name="forma_pago" value="{{ old('forma_pago', optional($ordenCompra)->forma_pago ?? '') }}" placeholder="Ej: Transferencia PPD, 30 días" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
                 @error('forma_pago')<p class="text-sm text-red-600">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Tipo de compra</label>
+                <select name="tipo_compra" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                    <option value="contado" {{ old('tipo_compra', optional($ordenCompra)->tipo_compra ?? 'contado') === 'contado' ? 'selected' : '' }}>Contado (no carga a estado de cuenta)</option>
+                    <option value="credito" {{ old('tipo_compra', optional($ordenCompra)->tipo_compra ?? 'contado') === 'credito' ? 'selected' : '' }}>Crédito (sí carga a cuentas por pagar)</option>
+                </select>
+                @error('tipo_compra')<p class="text-sm text-red-600">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Uso CFDI</label>

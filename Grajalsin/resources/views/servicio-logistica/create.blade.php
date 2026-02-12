@@ -16,20 +16,27 @@
                 @csrf
 
                 <div class="space-y-6">
-                    <!-- Cliente -->
+                    <!-- Cliente (búsqueda) -->
                     <div>
-                        <label for="cliente_id" class="block text-sm font-medium text-gray-700 mb-2">
-                            Cliente <span class="text-red-500">*</span>
+                        <label for="cliente_search_input" class="block text-sm font-medium text-gray-700 mb-2">
+                            Cliente <span class="text-red-500">*</span> 
+                            <span class="text-xs text-gray-400">({{ $clientes->count() }} disponibles)</span>
                         </label>
-                        <select name="cliente_id" id="cliente_id" required
+                        <input type="text" id="cliente_search_input" 
+                            placeholder="Escribe para filtrar: nombre, código (G-010) o RFC..."
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 mb-2">
+                        <select name="cliente_id" id="cliente_select" size="8" required
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
-                            <option value="">Seleccione un cliente</option>
+                            <option value="">— Seleccione un cliente —</option>
                             @foreach($clientes as $cliente)
-                                <option value="{{ $cliente->id }}" {{ old('cliente_id') == $cliente->id ? 'selected' : '' }}>
-                                    {{ $cliente->nombre }}
+                                <option value="{{ $cliente->id }}" 
+                                    data-search="{{ strtolower(($cliente->codigo ?? '') . ' ' . $cliente->nombre . ' ' . ($cliente->rfc ?? '')) }}"
+                                    {{ old('cliente_id') == $cliente->id ? 'selected' : '' }}>
+                                    {{ $cliente->codigo ? $cliente->codigo . ' — ' : '' }}{{ $cliente->nombre }}
                                 </option>
                             @endforeach
                         </select>
+                        <p class="mt-1 text-xs text-gray-500">Haz doble clic en un cliente para seleccionarlo rápidamente.</p>
                         @error('cliente_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -82,5 +89,56 @@
             </form>
         </div>
     </div>
-</x-app-layout>
 
+    <script>
+        // Filtro simple de clientes sin dependencias externas
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('cliente_search_input');
+            const select = document.getElementById('cliente_select');
+            
+            if (!input || !select) return;
+            
+            input.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                const options = select.querySelectorAll('option');
+                let visibleCount = 0;
+                
+                options.forEach((opt, i) => {
+                    if (i === 0) return; // Skip primera opción "Seleccione..."
+                    
+                    if (!query) {
+                        opt.style.display = '';
+                        visibleCount++;
+                        return;
+                    }
+                    
+                    const searchText = opt.dataset.search || '';
+                    
+                    if (searchText.includes(query)) {
+                        opt.style.display = '';
+                        visibleCount++;
+                    } else {
+                        opt.style.display = 'none';
+                    }
+                });
+                
+                // Auto-seleccionar si solo hay uno visible
+                if (visibleCount === 1 && query) {
+                    const visible = Array.from(options).find(opt => opt.style.display !== 'none' && opt.value);
+                    if (visible) visible.selected = true;
+                }
+            });
+            
+            // Doble clic para selección rápida
+            select.addEventListener('dblclick', function() {
+                if (this.value) {
+                    const form = this.closest('form');
+                    if (form) {
+                        // Enfocar siguiente campo
+                        document.getElementById('tipo_unidad')?.focus();
+                    }
+                }
+            });
+        });
+    </script>
+</x-app-layout>

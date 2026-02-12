@@ -10,12 +10,13 @@
     </div>
 
     <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-        <x-catalog-toolbar route="lineas-carga.index" placeholder="Buscar por nombre o contacto..." />
+        <x-catalog-toolbar route="lineas-carga.index" placeholder="Buscar por nombre, coordinador o teléfono..." />
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coordinador</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Base</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estatus</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notas</th>
@@ -27,6 +28,7 @@
                     <tr>
                         <td class="px-4 py-2">{{ $linea->nombre }}</td>
                         <td class="px-4 py-2">{{ $linea->contacto }}</td>
+                        <td class="px-4 py-2">{{ $linea->telefono ?? '—' }}</td>
                         <td class="px-4 py-2">{{ $linea->base_operacion }}</td>
                         <td class="px-4 py-2">
                             @if($linea->estatus)
@@ -47,7 +49,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-6 text-center text-gray-500">Sin líneas de carga registradas</td>
+                        <td colspan="7" class="px-4 py-6 text-center text-gray-500">Sin líneas de carga registradas</td>
                     </tr>
                 @endforelse
             </tbody>

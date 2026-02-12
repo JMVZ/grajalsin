@@ -71,6 +71,14 @@
                 <input type="date" name="fecha" value="{{ old('fecha', optional($pedidoVenta)->fecha?->format('Y-m-d') ?? date('Y-m-d')) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" required>
                 @error('fecha')<p class="text-sm text-red-600">{{ $message }}</p>@enderror
             </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Forma de pago</label>
+                <select name="forma_pago" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                    <option value="contado" {{ old('forma_pago', optional($pedidoVenta)->forma_pago ?? 'contado') === 'contado' ? 'selected' : '' }}>Contado (no carga a estado de cuenta)</option>
+                    <option value="credito" {{ old('forma_pago', optional($pedidoVenta)->forma_pago ?? 'contado') === 'credito' ? 'selected' : '' }}>Crédito (sí carga a cobranza)</option>
+                </select>
+                @error('forma_pago')<p class="text-sm text-red-600">{{ $message }}</p>@enderror
+            </div>
         </div>
     </div>
 

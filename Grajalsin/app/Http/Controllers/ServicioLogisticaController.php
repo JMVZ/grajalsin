@@ -36,7 +36,16 @@ class ServicioLogisticaController extends Controller
      */
     public function create()
     {
-        $clientes = Cliente::where('estatus', true)->orderBy('nombre')->get();
+        $clientes = Cliente::all()->sortBy(function ($c) {
+            if (preg_match('/G-(\d+)/i', $c->codigo, $m)) {
+                return (int) $m[1];
+            }
+            return 999999;
+        })->values();
+        
+        // Debug
+        \Log::info('Clientes cargados en create:', ['count' => $clientes->count()]);
+        
         $lineasCarga = LineaCarga::where('estatus', true)->orderBy('nombre')->get();
         
         return view('servicio-logistica.create', compact('clientes', 'lineasCarga'));
@@ -272,7 +281,12 @@ class ServicioLogisticaController extends Controller
      */
     public function edit(ServicioLogistica $servicioLogistica)
     {
-        $clientes = Cliente::where('estatus', true)->orderBy('nombre')->get();
+        $driver = \DB::connection()->getDriverName();
+        if ($driver === 'mysql' || $driver === 'mariadb') {
+            $clientes = Cliente::where('estatus', true)->orderByRaw("CAST(SUBSTRING_INDEX(COALESCE(CONCAT(codigo, '-0'), '0'), '-', -1) AS UNSIGNED) ASC")->get();
+        } else {
+            $clientes = Cliente::where('estatus', true)->orderByRaw("CAST(REPLACE(COALESCE(codigo, '0'), 'G-', '') AS INTEGER) ASC")->get();
+        }
         $lineasCarga = LineaCarga::where('estatus', true)->orderBy('nombre')->get();
         $choferes = Chofer::where('estatus', true)->orderBy('nombre')->get();
         $destinos = Destino::where('estatus', true)->orderBy('nombre')->get();

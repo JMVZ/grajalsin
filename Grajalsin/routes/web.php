@@ -110,6 +110,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('ventas/pedidos/{pedidoVenta}', [\App\Http\Controllers\PedidoVentaController::class, 'destroy'])->name('ventas.pedidos.destroy');
     Route::post('ventas/pedidos/{pedidoVenta}/estatus', [\App\Http\Controllers\PedidoVentaController::class, 'cambiarEstatus'])->name('ventas.pedidos.estatus');
 
+    // Cobranza (estado de cuenta clientes)
+    Route::get('cobranza', [\App\Http\Controllers\CobranzaController::class, 'index'])->name('cobranza.index');
+    Route::get('cobranza/{cliente}', [\App\Http\Controllers\CobranzaController::class, 'show'])->name('cobranza.show');
+    Route::get('cobranza/{cliente}/pago', [\App\Http\Controllers\CobranzaController::class, 'createPago'])->name('cobranza.pago.create');
+    Route::post('cobranza/{cliente}/pago', [\App\Http\Controllers\CobranzaController::class, 'storePago'])->name('cobranza.pago.store');
+
     // Módulo de Compras
     Route::get('compras', [\App\Http\Controllers\ComprasController::class, 'index'])->name('compras.index');
     Route::get('compras/ordenes', [\App\Http\Controllers\OrdenCompraController::class, 'index'])->name('compras.ordenes.index');
@@ -121,6 +127,12 @@ Route::middleware('auth')->group(function () {
     Route::put('compras/ordenes/{ordenCompra}', [\App\Http\Controllers\OrdenCompraController::class, 'update'])->name('compras.ordenes.update');
     Route::delete('compras/ordenes/{ordenCompra}', [\App\Http\Controllers\OrdenCompraController::class, 'destroy'])->name('compras.ordenes.destroy');
     Route::post('compras/ordenes/{ordenCompra}/estatus', [\App\Http\Controllers\OrdenCompraController::class, 'cambiarEstatus'])->name('compras.ordenes.estatus');
+
+    // Cuentas por pagar (estado de cuenta proveedores)
+    Route::get('cuentas-pagar', [\App\Http\Controllers\CuentasPagarController::class, 'index'])->name('cuentas-pagar.index');
+    Route::get('cuentas-pagar/{proveedor}', [\App\Http\Controllers\CuentasPagarController::class, 'show'])->name('cuentas-pagar.show');
+    Route::get('cuentas-pagar/{proveedor}/pago', [\App\Http\Controllers\CuentasPagarController::class, 'createPago'])->name('cuentas-pagar.pago.create');
+    Route::post('cuentas-pagar/{proveedor}/pago', [\App\Http\Controllers\CuentasPagarController::class, 'storePago'])->name('cuentas-pagar.pago.store');
 
     // Servicios de Logística CATTA
     Route::get('servicio-logistica/{servicioLogistica}/impresion', [\App\Http\Controllers\ServicioLogisticaController::class, 'print'])->name('servicio-logistica.print');

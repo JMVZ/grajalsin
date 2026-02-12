@@ -6,6 +6,9 @@
                 <p class="text-sm text-green-600 mt-1">Pedidos de ventas</p>
             </div>
             <div class="flex space-x-3">
+                <a href="{{ route('cobranza.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+                    Cobranza
+                </a>
                 <a href="{{ route('ventas.pedidos.create') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
                     Nuevo Pedido de Venta
                 </a>

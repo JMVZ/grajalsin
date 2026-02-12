@@ -35,6 +35,10 @@
                     <p>{{ $ordenCompra->forma_pago ?? '—' }}</p>
                 </div>
                 <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Tipo de compra</p>
+                    <p>{{ ($ordenCompra->tipo_compra ?? 'contado') === 'credito' ? 'Crédito (carga a cuentas por pagar)' : 'Contado' }}</p>
+                </div>
+                <div>
                     <p class="text-xs font-medium text-gray-500 uppercase">Uso CFDI</p>
                     <p>@php
                         $uso = $ordenCompra->uso_cfdi;

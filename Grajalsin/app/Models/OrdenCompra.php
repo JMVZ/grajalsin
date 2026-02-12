@@ -17,6 +17,7 @@ class OrdenCompra extends Model
         'fecha',
         'proveedor_id',
         'forma_pago',
+        'tipo_compra',
         'uso_cfdi',
         'subtotal',
         'iva',

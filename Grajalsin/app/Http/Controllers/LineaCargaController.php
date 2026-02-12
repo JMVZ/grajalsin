@@ -13,7 +13,8 @@ class LineaCargaController extends Controller
         if ($search = request('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('nombre', 'like', "%{$search}%")
-                    ->orWhere('contacto', 'like', "%{$search}%");
+                    ->orWhere('contacto', 'like', "%{$search}%")
+                    ->orWhere('telefono', 'like', "%{$search}%");
             });
         }
         $lineas = $query->paginate(request('per_page', 15))->withQueryString();
@@ -30,6 +31,7 @@ class LineaCargaController extends Controller
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
             'contacto' => ['nullable', 'string', 'max:255'],
+            'telefono' => ['nullable', 'string', 'max:30'],
             'base_operacion' => ['nullable', 'string', 'max:255'],
             'estatus' => ['nullable', 'boolean'],
             'notas' => ['nullable', 'string'],
@@ -52,6 +54,7 @@ class LineaCargaController extends Controller
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
             'contacto' => ['nullable', 'string', 'max:255'],
+            'telefono' => ['nullable', 'string', 'max:30'],
             'base_operacion' => ['nullable', 'string', 'max:255'],
             'estatus' => ['nullable', 'boolean'],
             'notas' => ['nullable', 'string'],

@@ -6,6 +6,9 @@
                 <p class="text-sm text-green-600 mt-1">Órdenes de compra (insumos y granos)</p>
             </div>
             <div class="flex space-x-3">
+                <a href="{{ route('cuentas-pagar.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+                    Cuentas por pagar
+                </a>
                 <a href="{{ route('compras.ordenes.create') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
                     Nueva Orden de Compra
                 </a>

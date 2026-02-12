@@ -14,6 +14,7 @@ class LineaCarga extends Model
     protected $fillable = [
         'nombre',
         'contacto',
+        'telefono',
         'base_operacion',
         'estatus',
         'notas',
